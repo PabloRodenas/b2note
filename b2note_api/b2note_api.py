@@ -19,3 +19,9 @@ def post_to_django():
 
 if __name__ == '__main__':
     app.run()
+
+
+# Steps for testing filtering by target.jsonld_id:
+#  1. Run the server: python b2note_api.py
+#  2. Execute the query with the following command:
+#       curl -g http://127.0.0.1:5000/annotations?where={%22target.jsonld_id%22:%22https://b2share.eudat.eu/record/30%22} | json_pp
