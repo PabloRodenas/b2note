@@ -73,8 +73,12 @@ body = {
 
 target = {
             'type' : 'list',
+            'description' : 'target file to annotate',
             'schema' : {
-                'jsonld_id' : { 'type' : 'string' },
+                'jsonld_id' : {
+                    'type' : 'string',
+                    'description' : 'URL of the target file',
+                    },
                 'type' : {
                     'type' : 'list',
                     'schema' : {
@@ -151,11 +155,13 @@ annotations = {
                         'generator.name': 1,
                         'generator.nickname': 1,
                         'generator.email': 1,
-                        'generator.homepage': 1
+                        'generator.homepage': 1,
                         },
                     },
+                'description' : 'List of annotations',
                 'schema' : {
                     '@context' : {
+                        'description' : 'Context of the annotation',
                         'type' : 'list',
                         'schema' : {
                             'type' : 'string',

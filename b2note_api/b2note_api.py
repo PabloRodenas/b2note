@@ -1,10 +1,10 @@
 from eve import Eve
-from eve_swagger import swagger
+from eve_swagger import swagger #, add_documentation
 #from flask import request
 from settings import mongo_settings
 from collections import OrderedDict
 from jsonld_support_functions import readyQuerySetValuesForDumpAsJSONLD
-#from django.conf import settings as global_settings
+from django.conf import settings as global_settings
 #import json, requests, os
 import json, os, copy
 
@@ -39,15 +39,15 @@ app.config['SWAGGER_INFO'] = {
 #app.config['SWAGGER_HOST'] = 'myhost.com'
 
 # optional. Add/Update elements in the documentation at run-time without deleting subtrees.
-# add_documentation({'paths': {'/status': {'get': {'parameters': [
-#     {
-#         'in': 'query',
-#         'name': 'foobar',
-#         'required': False,
-#         'description': 'special query parameter',
-#         'type': 'string'
-#     }]
-# }}}})
+#add_documentation({'paths': {'/annotations': {'get': {'parameters': [
+    #{
+        #'in': 'path',
+        #'name': 'id',
+        #'required': True,
+        #'description': 'ID of the annotation',
+        #'type': 'list'
+    #}]
+#}}}})
 
 
 
@@ -66,7 +66,7 @@ def before_returning_items(response):
             if not isinstance(response["@graph"], list):
                 response["@graph"] = [ response["@graph"] ]
             del(response["_items"])
-            context_str = open(os.path.join('./static/', 'files/anno_context.jsonld'), 'r').read()
+            context_str = open(os.path.join(global_settings.STATIC_PATH, 'files/anno_context.jsonld'), 'r').read()
             response["@context"] = json.loads(context_str, object_pairs_hook=OrderedDict)
     #print 'About to return items from "%s" ' % resource_name
     return response
@@ -79,7 +79,7 @@ def before_returning_item(response):
             if k2d in resp.keys():
                 del( resp[k2d] )
         response["@graph"] = [ readyQuerySetValuesForDumpAsJSONLD( resp ) ]
-        context_str = open(os.path.join('./static/', 'files/anno_context.jsonld'), 'r').read()
+        context_str = open(os.path.join(global_settings.STATIC_PATH, 'files/anno_context.jsonld'), 'r').read()
         response["@context"] = json.loads(context_str, object_pairs_hook=OrderedDict)
         for k2d in response.keys():
             if k2d not in ["@graph", "@context", "_etag"]:
